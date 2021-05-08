@@ -1,10 +1,10 @@
-package com.laowengs.mockball;
+package com.laowengs.mocker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MockballApplicationTests {
+class MockerApplicationTests {
 
     @Test
     void contextLoads() {

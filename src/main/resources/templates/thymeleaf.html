@@ -2,43 +2,75 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>MOCK BALL</title>
+    <title>MOCK MOCKER</title>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
-<body>
+<body style="margin-top: 0">
 
-<div id="app">
+<div id="app" >
+    <!-- 导航-->
     <el-row :gutter="20">
-        <el-col :span="5"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="16">
-            <el-row :gutter="20">
-                <el-menu class="el-menu-demo" mode="horizontal" >
+        <el-menu class="el-menu-demo" mode="horizontal" background-color="#409eff">
 
-                    <el-menu-item index="1">
-                        MOCK MOCK
-                    </el-menu-item>
-<!--                    <el-menu-item  index="2">-->
-<!--                        <template slot="title">接口Mock</template>-->
-<!--                    </el-menu-item>-->
-<!--                    <el-menu-item index="3">-->
-<!--                        <template slot="title">API管理</template>-->
-<!--                    </el-menu-item>-->
-<!--                    <el-menu-item index="4">调用详情</el-menu-item>-->
-<!--                    <el-menu-item index="5">其他</el-menu-item>-->
-                </el-menu>
-            </el-row>
+            <el-menu-item index="1">
+                <span style="color: #ffffff;font-size: 30px" >MOCK MOCKER <span style="font-size: 9px">v0.01</span></span>
+            </el-menu-item>
+            <!--                    <el-menu-item  index="2">-->
+            <!--                        <template slot="title">接口Mock</template>-->
+            <!--                    </el-menu-item>-->
+            <!--                    <el-menu-item index="3">-->
+            <!--                        <template slot="title">API管理</template>-->
+            <!--                    </el-menu-item>-->
+            <!--                    <el-menu-item index="4">调用详情</el-menu-item>-->
+            <!--                    <el-menu-item index="5">其他</el-menu-item>-->
+        </el-menu>
+    </el-row>
+
+    <!-- 内容-->
+    <el-row :gutter="20">
+        <el-col :span="4" >
+            <br>
+            <br>
+            <el-timeline>
+                <el-timeline-item
+                        v-for="(activity, index) in activities"
+                        :key="index"
+                        :icon="activity.icon"
+                        :type="activity.type"
+                        :color="activity.color"
+                        :size="activity.size"
+                        :timestamp="activity.timestamp">
+                    {{activity.content}}
+                </el-timeline-item>
+            </el-timeline>
+        </el-col>
+        <el-col :span="17">
+            <br>
             <el-row>
-                <el-button type="text" @click="dialogFormVisible = true">创建一个mock url</el-button>
-                <el-dialog title="MOCK URL" :visible.sync="dialogFormVisible">
-                    <el-form ref="form" :model="form" label-width="80px">
-                        <el-form-item label="接口名称">
+                <el-col :span="4">
+                    <el-button type="text" @click="dialogFormVisible = true">点击创建一个mock url</el-button>
+                </el-col>
+                <el-col :span="16">
+                    <el-input class="search_input"
+                            placeholder="请输入内容"
+                            v-model="input4"
+                            style="border-radius:16px 0px 0px 16px" >
+                    </el-input>
+                </el-col>
+                <el-col :span="4">
+                    <el-button class="search_button" type="primary" icon="el-icon-search" >搜索</el-button>
+                </el-col>
+
+                <el-dialog title="MOCK URL"  :visible.sync="dialogFormVisible">
+                    <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+                        <el-form-item label="接口名称" prop="name">
                             <el-input v-model="form.name"></el-input>
                         </el-form-item>
-                        <el-form-item label="接口地址">
+                        <el-form-item label="接口地址" prop="address">
                             <el-input v-model="form.address"></el-input>
                         </el-form-item>
-                        <el-form-item label="请求方式">
+                        <el-form-item label="请求方式" prop="method">
                             <el-checkbox-group v-model="form.method">
                                 <el-checkbox label="GET" name="method"></el-checkbox>
                                 <el-checkbox label="POST" name="method"></el-checkbox>
@@ -49,7 +81,7 @@
                                 <el-checkbox label="PATCH" name="method"></el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
-                        <el-form-item label="参数类型">
+                        <el-form-item label="参数类型" prop="requestType">
                             <el-checkbox-group v-model="form.requestType">
                                 <el-checkbox label="application/x-www-form-urlencoded" name="requestType"></el-checkbox>
                                 <el-checkbox label="application/json" name="requestType"></el-checkbox>
@@ -60,7 +92,13 @@
                                 <el-checkbox label="application/json" name="requestType"></el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
-                        <el-form-item label="返回内容">
+                        <el-form-item label="返回类型" prop="responseType">
+                            <el-radio-group v-model="form.responseType">
+                                <el-radio label="application/json"></el-radio>
+                                <el-radio label="application/text"></el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="返回内容" prop="response">
                             <el-input type="textarea" v-model="form.response"></el-input>
                         </el-form-item>
                     </el-form>
@@ -83,23 +121,69 @@
                     <el-table-column
                             prop="name"
                             label="接口名称"
-                            width="180">
+                            width="150">
                     </el-table-column>
                     <el-table-column
                             prop="address"
-                            label="mock地址">
+                            label="mock地址"
+                           >
+                    </el-table-column>
+                    <el-table-column label="操作" width="140">
+                        <template slot-scope="scope">
+                            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                            <el-button type="text" size="small">编辑</el-button>
+                            <el-button type="text" size="small">删除</el-button>
+                        </template>
                     </el-table-column>
                 </el-table>
             </el-row>
         </el-col>
-        <el-col :span="5"><div class="grid-content bg-purple"></div></el-col>
+        <el-col :span="3">
+            <br>
+            <el-alert
+                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
+                    type="success">
+            </el-alert>
+            <br>
+            <el-alert
+                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
+                    type="info">
+            </el-alert>
+            <br>
+            <el-alert
+                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
+                    type="warning">
+            </el-alert>
+            <br>
+            <el-alert
+                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
+                    type="success">
+            </el-alert>
+            <br>
+            <el-alert
+                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
+                    type="info">
+            </el-alert>
+            <br>
+            <el-alert
+                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
+                    type="warning">
+            </el-alert>
+        </el-col>
+    </el-row>
+    <!--    footer-->
+    <el-row :gutter="20">
     </el-row>
 </div>
 <style>
-    .grid-content {
-        border-radius: 4px;
-        min-height: 36px;
-    }
+.search_input input.el-input__inner {
+    border-radius:16px 0px 0px 16px;
+}
+.search_button{
+    border-radius:0px 16px 16px 0px;
+    border: 0.8px solid #409EFF;
+}
+
 </style>
 
 </body>
@@ -139,7 +223,49 @@
                     requestType: [],
                     response: ''
                 },
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
+                reverse: true,
+                activities: [{
+                    content: '页面开发完成',
+                    timestamp: '2021-05-08 21:25',
+                    size: 'large',
+                    type: 'primary',
+                    icon: 'el-icon-sunny'
+                }, {
+                    content: '后台服务支持',
+                    timestamp: '2021-05-08 23:25',
+                    color: '#0bbd87'
+                }, {
+                    content: '支持自定义尺寸',
+                    timestamp: '2018-04-03 20:46',
+                    size: 'large'
+                }, {
+                    content: '默认样式的节点',
+                    timestamp: '2018-04-03 20:46'
+                }],
+                input4:"",
+                rules: {
+                    name: [
+                        { required: true, message: '请输入接口名称', trigger: 'blur' },
+                        { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+                    ],
+                    address: [
+                        { required: true, message: '请输入接口地址', trigger: 'blur' },
+                        { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+                    ],
+                    method: [
+                        { type: 'array', required: true, message: '请至少选择一个请求方式', trigger: 'change' }
+                    ],
+                    requestType: [
+                        { type: 'array', required: true, message: '请至少选择一个请求方式', trigger: 'change' }
+                    ],
+                    responseType: [
+                        { required: true, message: '请选择返回类型', trigger: 'change' }
+                    ],
+                    response: [
+                        { required: false, message: '请输入返回内容', trigger: 'blur' },
+                    ]
+                }
             };
         },
         methods: {

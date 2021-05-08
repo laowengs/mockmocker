@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laowengs.mocker.mapper.MockInterfaceDao">
+  <resultMap id="BaseResultMap" type="com.laowengs.mocker.po.MockInterface">
+    <id column="interface_id" jdbcType="BIGINT" property="interfaceId" />
+    <result column="interface_name" jdbcType="VARCHAR" property="interfaceName" />
+    <result column="url_path" jdbcType="VARCHAR" property="urlPath" />
+    <result column="request_method" jdbcType="VARCHAR" property="requestMethod" />
+    <result column="request_context_type" jdbcType="VARCHAR" property="requestContextType" />
+    <result column="response_body" jdbcType="VARCHAR" property="responseBody" />
+    <result column="response_context_type" jdbcType="VARCHAR" property="responseContextType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    interface_id, interface_name, url_path, request_method, request_context_type, response_body, 
+    response_context_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mock_interface
+    where interface_id = #{interfaceId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from mock_interface
+    where interface_id = #{interfaceId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="interface_id" keyProperty="interfaceId" parameterType="com.laowengs.mocker.po.MockInterface" useGeneratedKeys="true">
+    insert into mock_interface (interface_name, url_path, request_method, 
+      request_context_type, response_body, response_context_type
+      )
+    values (#{interfaceName,jdbcType=VARCHAR}, #{urlPath,jdbcType=VARCHAR}, #{requestMethod,jdbcType=VARCHAR}, 
+      #{requestContextType,jdbcType=VARCHAR}, #{responseBody,jdbcType=VARCHAR}, #{responseContextType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="interface_id" keyProperty="interfaceId" parameterType="com.laowengs.mocker.po.MockInterface" useGeneratedKeys="true">
+    insert into mock_interface
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="interfaceName != null">
+        interface_name,
+      </if>
+      <if test="urlPath != null">
+        url_path,
+      </if>
+      <if test="requestMethod != null">
+        request_method,
+      </if>
+      <if test="requestContextType != null">
+        request_context_type,
+      </if>
+      <if test="responseBody != null">
+        response_body,
+      </if>
+      <if test="responseContextType != null">
+        response_context_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="interfaceName != null">
+        #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="urlPath != null">
+        #{urlPath,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null">
+        #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="requestContextType != null">
+        #{requestContextType,jdbcType=VARCHAR},
+      </if>
+      <if test="responseBody != null">
+        #{responseBody,jdbcType=VARCHAR},
+      </if>
+      <if test="responseContextType != null">
+        #{responseContextType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.laowengs.mocker.po.MockInterface">
+    update mock_interface
+    <set>
+      <if test="interfaceName != null">
+        interface_name = #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="urlPath != null">
+        url_path = #{urlPath,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null">
+        request_method = #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="requestContextType != null">
+        request_context_type = #{requestContextType,jdbcType=VARCHAR},
+      </if>
+      <if test="responseBody != null">
+        response_body = #{responseBody,jdbcType=VARCHAR},
+      </if>
+      <if test="responseContextType != null">
+        response_context_type = #{responseContextType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where interface_id = #{interfaceId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.laowengs.mocker.po.MockInterface">
+    update mock_interface
+    set interface_name = #{interfaceName,jdbcType=VARCHAR},
+      url_path = #{urlPath,jdbcType=VARCHAR},
+      request_method = #{requestMethod,jdbcType=VARCHAR},
+      request_context_type = #{requestContextType,jdbcType=VARCHAR},
+      response_body = #{responseBody,jdbcType=VARCHAR},
+      response_context_type = #{responseContextType,jdbcType=VARCHAR}
+    where interface_id = #{interfaceId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByMockInterface" parameterType="com.laowengs.mocker.po.MockInterface" resultType="com.laowengs.mocker.po.MockInterface">
+    select
+    <include refid="Base_Column_List" />
+    from mock_interface
+    <where >
+      <if test="interfaceName != null">
+        interface_name = #{interfaceName,jdbcType=VARCHAR},
+      </if>
+      <if test="urlPath != null">
+        url_path = #{urlPath,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null">
+        request_method = #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="requestContextType != null">
+        request_context_type = #{requestContextType,jdbcType=VARCHAR},
+      </if>
+      <if test="responseBody != null">
+        response_body = #{responseBody,jdbcType=VARCHAR},
+      </if>
+      <if test="responseContextType != null">
+        response_context_type = #{responseContextType,jdbcType=VARCHAR},
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByPath" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mock_interface
+    <where>
+      <if test="url_path != null">
+        url_path like concat('%',#{urlPath,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+  </select>
+</mapper>

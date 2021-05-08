@@ -1,4 +1,4 @@
-package com.laowengs.mockball;
+package com.laowengs.mocker;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

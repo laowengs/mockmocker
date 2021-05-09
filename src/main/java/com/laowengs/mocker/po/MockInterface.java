@@ -1,6 +1,7 @@
 package com.laowengs.mocker.po;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * mock_interface
@@ -20,6 +21,12 @@ public class MockInterface implements Serializable {
     private String responseBody;
 
     private String responseContextType;
+
+    private Date createDate;
+
+    private Date updateDate;
+
+    private String realUri;
 
     private static final long serialVersionUID = 1L;
 
@@ -79,40 +86,30 @@ public class MockInterface implements Serializable {
         this.responseContextType = responseContextType;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        MockInterface other = (MockInterface) that;
-        return (this.getInterfaceId() == null ? other.getInterfaceId() == null : this.getInterfaceId().equals(other.getInterfaceId()))
-            && (this.getInterfaceName() == null ? other.getInterfaceName() == null : this.getInterfaceName().equals(other.getInterfaceName()))
-            && (this.getUrlPath() == null ? other.getUrlPath() == null : this.getUrlPath().equals(other.getUrlPath()))
-            && (this.getRequestMethod() == null ? other.getRequestMethod() == null : this.getRequestMethod().equals(other.getRequestMethod()))
-            && (this.getRequestContextType() == null ? other.getRequestContextType() == null : this.getRequestContextType().equals(other.getRequestContextType()))
-            && (this.getResponseBody() == null ? other.getResponseBody() == null : this.getResponseBody().equals(other.getResponseBody()))
-            && (this.getResponseContextType() == null ? other.getResponseContextType() == null : this.getResponseContextType().equals(other.getResponseContextType()));
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getInterfaceId() == null) ? 0 : getInterfaceId().hashCode());
-        result = prime * result + ((getInterfaceName() == null) ? 0 : getInterfaceName().hashCode());
-        result = prime * result + ((getUrlPath() == null) ? 0 : getUrlPath().hashCode());
-        result = prime * result + ((getRequestMethod() == null) ? 0 : getRequestMethod().hashCode());
-        result = prime * result + ((getRequestContextType() == null) ? 0 : getRequestContextType().hashCode());
-        result = prime * result + ((getResponseBody() == null) ? 0 : getResponseBody().hashCode());
-        result = prime * result + ((getResponseContextType() == null) ? 0 : getResponseContextType().hashCode());
-        return result;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getRealUri() {
+        return realUri;
+    }
+
+    public void setRealUri(String realUri) {
+        this.realUri = realUri;
+    }
+
 
     @Override
     public String toString() {
@@ -127,7 +124,9 @@ public class MockInterface implements Serializable {
         sb.append(", requestContextType=").append(requestContextType);
         sb.append(", responseBody=").append(responseBody);
         sb.append(", responseContextType=").append(responseContextType);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append(", createDate=").append(createDate);
+        sb.append(", updateDate=").append(updateDate);
+        sb.append(", realUri=").append(realUri);
         sb.append("]");
         return sb.toString();
     }

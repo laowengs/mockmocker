@@ -1,5 +1,10 @@
 package com.laowengs.mocker;
 
+import com.laowengs.mocker.method.IRequestMethodProcessor;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -7,13 +12,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 import java.util.Enumeration;
+import java.util.ResourceBundle;
 
 @WebServlet(name = "mockServlet", urlPatterns = "/mock/*")  //标记为servlet，以便启动器扫描。
-public class MockServlet extends HttpServlet {
+public class MockServlet extends HttpServlet implements ApplicationContextAware {
+    private static final String METHOD_DELETE = "DELETE";
+    private static final String METHOD_HEAD = "HEAD";
+    private static final String METHOD_GET = "GET";
+    private static final String METHOD_OPTIONS = "OPTIONS";
+    private static final String METHOD_POST = "POST";
+    private static final String METHOD_PUT = "PUT";
+    private static final String METHOD_PATCH = "PATCH";
+    private static final String METHOD_TRACE = "TRACE";
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private static final String HEADER_IFMODSINCE = "If-Modified-Since";
+    private static final String HEADER_LASTMOD = "Last-Modified";
+
+    private static final String LSTRING_FILE =
+            "javax.servlet.http.LocalStrings";
+    private static final ResourceBundle lStrings =
+            ResourceBundle.getBundle(LSTRING_FILE);
+
+    private ApplicationContext applicationContext;
+
+
+    @Deprecated
+    protected void doGet8888(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String requestUrl = request.getRequestURL().toString();//得到请求的URL地址
         String requestUri = request.getRequestURI();//得到请求的资源
@@ -81,4 +107,25 @@ public class MockServlet extends HttpServlet {
 
     }
 
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String method = req.getMethod().toLowerCase();
+        IRequestMethodProcessor requestMethodProcessor = null;
+        try {
+            requestMethodProcessor = (IRequestMethodProcessor) applicationContext.getBean(method + "RequestMethodProcessor");
+            requestMethodProcessor.processor(req,resp);
+        }catch (BeansException e){
+            String errMsg = lStrings.getString("http.method_not_implemented");
+            Object[] errArgs = new Object[1];
+            errArgs[0] = method;
+            errMsg = MessageFormat.format(errMsg, errArgs);
+            resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, errMsg);
+        }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }

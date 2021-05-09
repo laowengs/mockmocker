@@ -1,28 +1,36 @@
 package com.laowengs.mocker;
 
+import com.laowengs.mocker.cache.IMockUrlCache;
+import com.laowengs.mocker.dto.MockInterfaceAddDTO;
 import com.laowengs.mocker.mapper.MockInterfaceDao;
 import com.laowengs.mocker.po.MockInterface;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/interface")
 @RestController
 public class MockerController {
-    private MockInterfaceDao mockInterfaceDao;
+    private final MockInterfaceDao mockInterfaceDao;
+    private final IMockUrlCache mockUrlCache;
 
     @Autowired
-    public MockerController(MockInterfaceDao mockInterfaceDao) {
+    public MockerController(MockInterfaceDao mockInterfaceDao,
+                            @Qualifier("mockUrlEhCacheImpl") IMockUrlCache mockUrlCache) {
         this.mockInterfaceDao = mockInterfaceDao;
+        this.mockUrlCache = mockUrlCache;
     }
 
     @GetMapping
@@ -37,15 +45,47 @@ public class MockerController {
     }
 
     @PutMapping
-    public MockInterface insert(@RequestBody MockInterface mockInterface) {
+    public MockInterface insert(@RequestBody MockInterfaceAddDTO request) {
+        MockInterface mockInterface = new MockInterface();
+        mockInterface.setInterfaceName(request.getInterfaceName());
+        String urlPath = request.getUrlPath();
+        if(!urlPath.startsWith("/")){
+            urlPath = "/"+urlPath;
+        }
+        mockInterface.setUrlPath(urlPath);
+        mockInterface.setRequestMethod(StringUtils.join(request.getRequestMethod(),","));
+        mockInterface.setRequestContextType(StringUtils.join(request.getRequestContextType(),","));
+        mockInterface.setResponseBody(request.getResponseBody());
+        mockInterface.setResponseContextType(request.getResponseContextType());
+        mockInterface.setRealUri("/"+UUID.randomUUID().toString().replace("-","")+urlPath);
+        mockInterface.setCreateDate(new Date());
         Long interfaceId = mockInterfaceDao.insert(mockInterface);
+        if(interfaceId == 1){
+            mockUrlCache.putCache("/mock"+mockInterface.getRealUri(),mockInterface);
+        }
         return mockInterface;
     }
 
 
     @PatchMapping
-    public MockInterface update(@RequestBody  MockInterface mockInterface) {
+    public MockInterface update(@RequestBody  MockInterfaceAddDTO request) {
+        MockInterface mockInterface = new MockInterface();
+        mockInterface.setInterfaceName(request.getInterfaceName());
+        String urlPath = request.getUrlPath();
+        if(!urlPath.startsWith("/")){
+            urlPath = "/"+urlPath;
+        }
+        mockInterface.setUrlPath(urlPath);
+        mockInterface.setRequestMethod(StringUtils.join(request.getRequestMethod(),","));
+        mockInterface.setRequestContextType(StringUtils.join(request.getRequestContextType(),","));
+        mockInterface.setResponseBody(request.getResponseBody());
+        mockInterface.setResponseContextType(request.getResponseContextType());
+        mockInterface.setUpdateDate(new Date());
+        mockInterface.setRealUri("/"+UUID.randomUUID().toString().replace("-","")+urlPath);
         int number = mockInterfaceDao.updateByPrimaryKeySelective(mockInterface);
+        if(number == 1){
+            mockUrlCache.putCache("/mock"+mockInterface.getRealUri(),mockInterface);
+        }
         return mockInterface;
     }
 

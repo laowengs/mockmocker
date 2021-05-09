@@ -9,13 +9,16 @@
     <result column="request_context_type" jdbcType="VARCHAR" property="requestContextType" />
     <result column="response_body" jdbcType="VARCHAR" property="responseBody" />
     <result column="response_context_type" jdbcType="VARCHAR" property="responseContextType" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="real_uri" jdbcType="VARCHAR" property="realUri" />
   </resultMap>
   <sql id="Base_Column_List">
-    interface_id, interface_name, url_path, request_method, request_context_type, response_body, 
-    response_context_type
+    interface_id, interface_name, url_path, request_method, request_context_type, response_body,
+    response_context_type, create_date, update_date,real_uri
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from mock_interface
     where interface_id = #{interfaceId,jdbcType=BIGINT}
@@ -25,12 +28,12 @@
     where interface_id = #{interfaceId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="interface_id" keyProperty="interfaceId" parameterType="com.laowengs.mocker.po.MockInterface" useGeneratedKeys="true">
-    insert into mock_interface (interface_name, url_path, request_method, 
-      request_context_type, response_body, response_context_type
-      )
-    values (#{interfaceName,jdbcType=VARCHAR}, #{urlPath,jdbcType=VARCHAR}, #{requestMethod,jdbcType=VARCHAR}, 
-      #{requestContextType,jdbcType=VARCHAR}, #{responseBody,jdbcType=VARCHAR}, #{responseContextType,jdbcType=VARCHAR}
-      )
+    insert into mock_interface (interface_name, url_path, request_method,
+      request_context_type, response_body, response_context_type,
+      create_date, update_date,real_uri)
+    values (#{interfaceName,jdbcType=VARCHAR}, #{urlPath,jdbcType=VARCHAR}, #{requestMethod,jdbcType=VARCHAR},
+      #{requestContextType,jdbcType=VARCHAR}, #{responseBody,jdbcType=VARCHAR}, #{responseContextType,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{realUri,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="interface_id" keyProperty="interfaceId" parameterType="com.laowengs.mocker.po.MockInterface" useGeneratedKeys="true">
     insert into mock_interface
@@ -53,6 +56,15 @@
       <if test="responseContextType != null">
         response_context_type,
       </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="realUri != null">
+        real_uri,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="interfaceName != null">
@@ -72,6 +84,15 @@
       </if>
       <if test="responseContextType != null">
         #{responseContextType,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realUri != null">
+        #{realUri,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -96,6 +117,15 @@
       <if test="responseContextType != null">
         response_context_type = #{responseContextType,jdbcType=VARCHAR},
       </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realUri != null">
+        real_uri = #{realUri,jdbcType=VARCHAR},
+      </if>
     </set>
     where interface_id = #{interfaceId,jdbcType=BIGINT}
   </update>
@@ -106,7 +136,10 @@
       request_method = #{requestMethod,jdbcType=VARCHAR},
       request_context_type = #{requestContextType,jdbcType=VARCHAR},
       response_body = #{responseBody,jdbcType=VARCHAR},
-      response_context_type = #{responseContextType,jdbcType=VARCHAR}
+      response_context_type = #{responseContextType,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+      real_uri = #{realUri,jdbcType=VARCHAR},
     where interface_id = #{interfaceId,jdbcType=BIGINT}
   </update>
 
@@ -114,7 +147,7 @@
     select
     <include refid="Base_Column_List" />
     from mock_interface
-    <where >
+    <where>
       <if test="interfaceName != null">
         interface_name = #{interfaceName,jdbcType=VARCHAR},
       </if>
@@ -132,6 +165,9 @@
       </if>
       <if test="responseContextType != null">
         response_context_type = #{responseContextType,jdbcType=VARCHAR},
+      </if>
+      <if test="realUri != null">
+        real_uri = #{realUri,jdbcType=VARCHAR},
       </if>
     </where>
   </select>

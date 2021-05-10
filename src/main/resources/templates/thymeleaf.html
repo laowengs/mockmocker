@@ -180,9 +180,16 @@
                             width="80">
                     </el-table-column>
                     <el-table-column
-                            prop="response"
                             label="返回值"
                             width="80">
+                        <template slot-scope="scope">
+                            <el-popover trigger="click" placement="top">
+                                <p>{{ scope.row.response }}</p>
+                                <el-button type="text" slot="reference" class="name-wrapper">
+                                    接口内容
+                                </el-button>
+                            </el-popover>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="createDate"
@@ -310,6 +317,7 @@
                 dialogInsertMockFormVisible: false,
                 dialogMockInfoFormVisible: false,
                 addForm: {
+                    interfaceId: null,
                     interfaceName: '',
                     address: '',
                     method: [],
@@ -436,6 +444,7 @@
                 }).then(response => {
                     this.dialogInsertMockFormVisible = true
                     this.addForm = {
+                        interfaceId: response.data.interfaceId,
                         interfaceName: response.data.interfaceName,
                         address: response.data.urlPath,
                         method: response.data.requestMethod.split(','),
@@ -482,21 +491,20 @@
                     this.qryMockList()
                 })
             },
-            updateMockerInfo(interfaceId){
+            updateMockerInfo(){
                 axios.request({
-                    url: '/interface',
+                    url: '/interface/'+this.addForm.interfaceId,
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     data: {
-                        'interfaceId':interfaceId,
                         'interfaceName':this.addForm.interfaceName,
                         'urlPath':this.addForm.address,
                         'requestMethod':this.addForm.method,
                         'requestContextType':this.addForm.requestType,
-                        'responseBody':this.addForm.responseType,
-                        'responseContextType':this.addForm.response,
+                        'responseBody':this.addForm.response,
+                        'responseContextType':this.addForm.responseType,
                     }
                 }).then(response => {
                     this.dialogInsertMockFormVisible = false

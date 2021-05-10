@@ -2,7 +2,7 @@ package com.laowengs.mocker.dto;
 
 import java.util.Arrays;
 
-public class MockInterfaceAddDTO {
+public class MockInterfaceDTO {
     private String interfaceName;
 
     private String urlPath;

@@ -1,7 +1,7 @@
 package com.laowengs.mocker;
 
 import com.laowengs.mocker.cache.IMockUrlCache;
-import com.laowengs.mocker.dto.MockInterfaceAddDTO;
+import com.laowengs.mocker.dto.MockInterfaceDTO;
 import com.laowengs.mocker.mapper.MockInterfaceDao;
 import com.laowengs.mocker.po.MockInterface;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +45,7 @@ public class MockerController {
     }
 
     @PutMapping
-    public MockInterface insert(@RequestBody MockInterfaceAddDTO request) {
+    public MockInterface insert(@RequestBody MockInterfaceDTO request) {
         MockInterface mockInterface = new MockInterface();
         mockInterface.setInterfaceName(request.getInterfaceName());
         String urlPath = request.getUrlPath();
@@ -67,9 +67,10 @@ public class MockerController {
     }
 
 
-    @PatchMapping
-    public MockInterface update(@RequestBody  MockInterfaceAddDTO request) {
+    @PatchMapping("/{interfaceId}")
+    public MockInterface update(@PathVariable Long interfaceId, @RequestBody MockInterfaceDTO request) {
         MockInterface mockInterface = new MockInterface();
+        mockInterface.setInterfaceId(interfaceId);
         mockInterface.setInterfaceName(request.getInterfaceName());
         String urlPath = request.getUrlPath();
         if(!urlPath.startsWith("/")){
@@ -82,10 +83,19 @@ public class MockerController {
         mockInterface.setResponseContextType(request.getResponseContextType());
         mockInterface.setUpdateDate(new Date());
         mockInterface.setRealUri("/"+UUID.randomUUID().toString().replace("-","")+urlPath);
-        int number = mockInterfaceDao.updateByPrimaryKeySelective(mockInterface);
-        if(number == 1){
-            mockUrlCache.putCache("/mock"+mockInterface.getRealUri(),mockInterface);
+        MockInterface mockInterfaceOri = mockInterfaceDao.selectByPrimaryKey(interfaceId);
+        if(mockInterfaceOri != null){
+            if(mockInterfaceOri.getUrlPath().equals(mockInterface.getUrlPath())){
+                mockInterface.setRealUri(mockInterfaceOri.getRealUri());
+            }
+            int number = mockInterfaceDao.updateByPrimaryKey(mockInterface);
+
+            if(number == 1){
+                mockUrlCache.remove(mockInterfaceOri.getUrlPath());
+                mockUrlCache.putCache("/mock"+mockInterface.getRealUri(),mockInterface);
+            }
         }
+
         return mockInterface;
     }
 

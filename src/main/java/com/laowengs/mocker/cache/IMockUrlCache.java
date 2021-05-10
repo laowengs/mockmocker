@@ -8,4 +8,5 @@ public interface IMockUrlCache {
 
     void putCache(String urlPath,MockInterface mockInterface);
 
+    void remove(String urlPath);
 }

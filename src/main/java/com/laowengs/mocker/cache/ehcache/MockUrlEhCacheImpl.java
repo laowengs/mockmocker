@@ -35,6 +35,11 @@ public class MockUrlEhCacheImpl implements IMockUrlCache, InitializingBean {
         mockUrlCache.put(urlPath,mockInterface);
     }
 
+    @Override
+    public void remove(String urlPath) {
+        mockUrlCache.remove(urlPath);
+    }
+
 
     @Override
     public void afterPropertiesSet() throws Exception {

@@ -138,8 +138,8 @@
       response_body = #{responseBody,jdbcType=VARCHAR},
       response_context_type = #{responseContextType,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
-      real_uri = #{realUri,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      real_uri = #{realUri,jdbcType=VARCHAR}
     where interface_id = #{interfaceId,jdbcType=BIGINT}
   </update>
 

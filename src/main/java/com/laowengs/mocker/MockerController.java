@@ -95,7 +95,6 @@ public class MockerController {
                 mockUrlCache.putCache("/mock"+mockInterface.getRealUri(),mockInterface);
             }
         }
-
         return mockInterface;
     }
 

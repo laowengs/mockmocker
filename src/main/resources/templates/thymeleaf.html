@@ -511,7 +511,7 @@
                     this.qryMockList()
                 })
             },
-            deleteMockerInfo(){
+            deleteMockerInfo(interfaceId){
                 axios.request({
                     url: '/interface/'+interfaceId,
                     method: 'DELETE',

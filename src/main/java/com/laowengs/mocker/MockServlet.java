@@ -114,14 +114,17 @@ public class MockServlet extends HttpServlet implements ApplicationContextAware 
         IRequestMethodProcessor requestMethodProcessor = null;
         try {
             requestMethodProcessor = (IRequestMethodProcessor) applicationContext.getBean(method + "RequestMethodProcessor");
-            requestMethodProcessor.processor(req,resp);
+
         }catch (BeansException e){
-            String errMsg = lStrings.getString("http.method_not_implemented");
-            Object[] errArgs = new Object[1];
-            errArgs[0] = method;
-            errMsg = MessageFormat.format(errMsg, errArgs);
-            resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, errMsg);
+//            String errMsg = lStrings.getString("http.method_not_implemented");
+//            Object[] errArgs = new Object[1];
+//            errArgs[0] = method;
+//            errMsg = MessageFormat.format(errMsg, errArgs);
+//            resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, errMsg);
+            requestMethodProcessor = (IRequestMethodProcessor)applicationContext.getBean("getRequestMethodProcessor");
         }
+
+        requestMethodProcessor.processor(req,resp);
     }
 
     @Override

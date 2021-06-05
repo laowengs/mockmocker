@@ -106,25 +106,27 @@
                     </image>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.experimental</groupId>-->
-<!--                <artifactId>spring-aot-maven-plugin</artifactId>-->
-<!--                <version>${spring-native.version}</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>test-generate</id>-->
-<!--                        <goals>-->
-<!--                            <goal>test-generate</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>generate</id>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.2</version>
+                <configuration>
+                    <imageName>mockmocker</imageName>
+                    <baseImage>openjdk:8-jre-alpine</baseImage>
+                    <maintainer>369196439@qq.com</maintainer>
+                    <workdir>/root</workdir>
+                    <cmd>["java", "-version"]</cmd>
+                    <entryPoint>["java", "-jar", "${project.build.finalName}.jar"]</entryPoint>
+                    <!-- 这里是复制 jar 包到 docker 容器指定目录配置 -->
+                    <resources>
+                        <resource>
+                            <targetPath>/root</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <repositories>

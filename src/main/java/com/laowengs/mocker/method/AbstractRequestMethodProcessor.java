@@ -3,13 +3,19 @@ package com.laowengs.mocker.method;
 import com.laowengs.mocker.cache.IMockUrlCache;
 import com.laowengs.mocker.cache.ehcache.MockUrlEhCacheImpl;
 import com.laowengs.mocker.po.MockInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public abstract class AbstractRequestMethodProcessor implements IRequestMethodProcessor{
 
+    private final Logger logger = LoggerFactory.getLogger(AbstractRequestMethodProcessor.class);
     protected IMockUrlCache mockUrlCache;
 
     public AbstractRequestMethodProcessor(IMockUrlCache mockUrlCache) {
@@ -19,6 +25,17 @@ public abstract class AbstractRequestMethodProcessor implements IRequestMethodPr
     @Override
     public void processor(HttpServletRequest req, HttpServletResponse resp) {
         String requestURI = req.getRequestURI();
+        String requestBody = null;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(req.getInputStream(), StandardCharsets.UTF_8))) {
+            StringBuilder bodyBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                bodyBuilder.append(line);
+            }
+            requestBody = bodyBuilder.toString();
+            logger.info(requestBody);
+        } catch (IOException e) {
+        }
         MockInterface mockInterface = mockUrlCache.getCache(requestURI);
         if(mockInterface == null){
             doNotFound(req,resp);

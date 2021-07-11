@@ -3,7 +3,9 @@ package com.laowengs.mocker;
 import com.laowengs.mocker.cache.IMockUrlCache;
 import com.laowengs.mocker.dto.MockInterfaceDTO;
 import com.laowengs.mocker.mapper.MockInterfaceDao;
+import com.laowengs.mocker.mapper.MockLogDao;
 import com.laowengs.mocker.po.MockInterface;
+import com.laowengs.mocker.po.MockLog;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,12 +27,15 @@ import java.util.UUID;
 public class MockerController {
     private final MockInterfaceDao mockInterfaceDao;
     private final IMockUrlCache mockUrlCache;
+    private final MockLogDao mockLogDao;
 
     @Autowired
     public MockerController(MockInterfaceDao mockInterfaceDao,
-                            @Qualifier("mockUrlEhCacheImpl") IMockUrlCache mockUrlCache) {
+                            @Qualifier("mockUrlEhCacheImpl") IMockUrlCache mockUrlCache,
+                            MockLogDao mockLogDao) {
         this.mockInterfaceDao = mockInterfaceDao;
         this.mockUrlCache = mockUrlCache;
+        this.mockLogDao = mockLogDao;
     }
 
     @GetMapping
@@ -101,5 +106,10 @@ public class MockerController {
     @DeleteMapping("/{interfaceId}")
     public Integer delete(@PathVariable("interfaceId") Long interfaceId) {
         return mockInterfaceDao.deleteByPrimaryKey(interfaceId);
+    }
+
+    @GetMapping("/log/{interfaceId}")
+    public List<MockLog> listLog(@PathVariable Long interfaceId) {
+        return mockLogDao.listByInterfaceId(interfaceId);
     }
 }

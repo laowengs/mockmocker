@@ -40,7 +40,7 @@
             </el-timeline>
         </el-col>
 <!--        中间-->
-        <el-col :span="17">
+        <el-col :span="20">
             <br>
             <el-row>
                 <el-col :span="4">
@@ -167,18 +167,18 @@
                     <el-table-column
                             prop="requestMethod"
                             label="请求方式"
-                            width="80">
+                            width="100">
                     </el-table-column>
-                    <el-table-column
-                            prop="requestType"
-                            label="请求类型"
-                            width="80">
-                    </el-table-column>
-                    <el-table-column
-                            prop="responseType"
-                            label="返回类型"
-                            width="80">
-                    </el-table-column>
+<!--                    <el-table-column-->
+<!--                            prop="requestType"-->
+<!--                            label="请求类型"-->
+<!--                            width="80">-->
+<!--                    </el-table-column>-->
+<!--                    <el-table-column-->
+<!--                            prop="responseType"-->
+<!--                            label="返回类型"-->
+<!--                            width="80">-->
+<!--                    </el-table-column>-->
                     <el-table-column
                             label="返回值"
                             width="80">
@@ -191,23 +191,22 @@
                             </el-popover>
                         </template>
                     </el-table-column>
-                    <el-table-column
-                            prop="createDate"
-                            label="创建时间"
-                            width="100">
-                    </el-table-column>
 
                     <el-table-column
                             prop="address"
                             label="mock地址"
-                            width="100"
+                            width="200"
                     >
-
                     </el-table-column>
                     <el-table-column
                             prop="realUri"
                             label="调用地址"
                     ></el-table-column>
+                    <el-table-column
+                            prop="createDate"
+                            label="创建时间"
+                            width="200">
+                    </el-table-column>
                     <el-table-column label="操作" width="140">
                         <template slot-scope="scope">
                             <el-button @click="showInfoDialog(scope.row.id)" type="text" size="small">查看</el-button>
@@ -231,7 +230,7 @@
                 </el-card>
 
                 <el-table
-                        :data="tableData"
+                        :data="callLogData"
                         stripe
                         style="width: 100%">
                     <el-table-column
@@ -240,50 +239,17 @@
                             width="60">
                     </el-table-column>
                     <el-table-column
-                            prop="address"
+                            prop="callDate"
                             label="调用时间"
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="address"
+                            prop="callerIp"
                             label="mock地址"
                     >
                     </el-table-column>
                 </el-table>
             </el-dialog>
-        </el-col>
-<!--        右侧-->
-        <el-col :span="3">
-            <br>
-            <el-alert
-                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
-                    type="success">
-            </el-alert>
-            <br>
-            <el-alert
-                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
-                    type="info">
-            </el-alert>
-            <br>
-            <el-alert
-                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
-                    type="warning">
-            </el-alert>
-            <br>
-            <el-alert
-                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
-                    type="success">
-            </el-alert>
-            <br>
-            <el-alert
-                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
-                    type="info">
-            </el-alert>
-            <br>
-            <el-alert
-                    title="广告位招租!广告位招租!广告位招租!广告位招租!广告位招租!"
-                    type="warning">
-            </el-alert>
         </el-col>
     </el-row>
     <!--    footer-->
@@ -314,6 +280,7 @@
         data() {
             return {
                 tableData: [],
+                callLogData:[],
                 dialogInsertMockFormVisible: false,
                 dialogMockInfoFormVisible: false,
                 addForm: {
@@ -469,6 +436,22 @@
                         responseType: response.data.responseContextType,
                         response: response.data.responseBody
                     }
+                })
+                axios.request({
+                    url: '/interface/log/'+interfaceId,
+                    method: 'GET',
+                    params: {}
+                }).then(response => {
+                    this.dialogMockInfoFormVisible = true
+                    const logList = []
+                    response.data.forEach(info => {
+                        logList.push({
+                            "id": info.logId,
+                            "callDate": info.callDate,
+                            "callerIp": info.callerIp
+                        })
+                    })
+                    this.callLogData = logList
                 })
             },
             addMockerInfo(){

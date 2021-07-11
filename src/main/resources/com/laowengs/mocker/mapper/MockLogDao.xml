@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laowengs.mocker.mapper.MockLogDao">
+  <resultMap id="BaseResultMap" type="com.laowengs.mocker.po.MockLog">
+    <id column="log_id" jdbcType="BIGINT" property="logId" />
+    <result column="request_url" jdbcType="VARCHAR" property="requestUrl" />
+    <result column="header" jdbcType="VARCHAR" property="header" />
+    <result column="path_param" jdbcType="VARCHAR" property="pathParam" />
+    <result column="request_body" jdbcType="VARCHAR" property="requestBody" />
+    <result column="response_body" jdbcType="VARCHAR" property="responseBody" />
+    <result column="call_date" jdbcType="TIMESTAMP" property="callDate" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="request_uri" jdbcType="VARCHAR" property="requestUri" />
+    <result column="query_string" jdbcType="VARCHAR" property="queryString" />
+    <result column="caller_ip" jdbcType="VARCHAR" property="callerIp" />
+    <result column="caller_host" jdbcType="VARCHAR" property="callerHost" />
+    <result column="request_method" jdbcType="VARCHAR" property="requestMethod" />
+    <result column="interface_id" jdbcType="BIGINT" property="interfaceId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    log_id, request_url, `header`, path_param, request_body, response_body, call_date, 
+    create_date, request_uri, query_string, caller_ip, caller_host, request_method, interface_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mock_log
+    where log_id = #{logId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from mock_log
+    where log_id = #{logId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="log_id" keyProperty="logId" parameterType="com.laowengs.mocker.po.MockLog" useGeneratedKeys="true">
+    insert into mock_log (request_url, `header`, path_param, 
+      request_body, response_body, call_date, 
+      create_date, request_uri, query_string, 
+      caller_ip, caller_host, request_method, 
+      interface_id)
+    values (#{requestUrl,jdbcType=VARCHAR}, #{header,jdbcType=VARCHAR}, #{pathParam,jdbcType=VARCHAR}, 
+      #{requestBody,jdbcType=VARCHAR}, #{responseBody,jdbcType=VARCHAR}, #{callDate,jdbcType=TIMESTAMP}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{requestUri,jdbcType=VARCHAR}, #{queryString,jdbcType=VARCHAR}, 
+      #{callerIp,jdbcType=VARCHAR}, #{callerHost,jdbcType=VARCHAR}, #{requestMethod,jdbcType=VARCHAR}, 
+      #{interfaceId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="log_id" keyProperty="logId" parameterType="com.laowengs.mocker.po.MockLog" useGeneratedKeys="true">
+    insert into mock_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="requestUrl != null">
+        request_url,
+      </if>
+      <if test="header != null">
+        `header`,
+      </if>
+      <if test="pathParam != null">
+        path_param,
+      </if>
+      <if test="requestBody != null">
+        request_body,
+      </if>
+      <if test="responseBody != null">
+        response_body,
+      </if>
+      <if test="callDate != null">
+        call_date,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="requestUri != null">
+        request_uri,
+      </if>
+      <if test="queryString != null">
+        query_string,
+      </if>
+      <if test="callerIp != null">
+        caller_ip,
+      </if>
+      <if test="callerHost != null">
+        caller_host,
+      </if>
+      <if test="requestMethod != null">
+        request_method,
+      </if>
+      <if test="interfaceId != null">
+        interface_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="requestUrl != null">
+        #{requestUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="header != null">
+        #{header,jdbcType=VARCHAR},
+      </if>
+      <if test="pathParam != null">
+        #{pathParam,jdbcType=VARCHAR},
+      </if>
+      <if test="requestBody != null">
+        #{requestBody,jdbcType=VARCHAR},
+      </if>
+      <if test="responseBody != null">
+        #{responseBody,jdbcType=VARCHAR},
+      </if>
+      <if test="callDate != null">
+        #{callDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestUri != null">
+        #{requestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="queryString != null">
+        #{queryString,jdbcType=VARCHAR},
+      </if>
+      <if test="callerIp != null">
+        #{callerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="callerHost != null">
+        #{callerHost,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null">
+        #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceId != null">
+        #{interfaceId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.laowengs.mocker.po.MockLog">
+    update mock_log
+    <set>
+      <if test="requestUrl != null">
+        request_url = #{requestUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="header != null">
+        `header` = #{header,jdbcType=VARCHAR},
+      </if>
+      <if test="pathParam != null">
+        path_param = #{pathParam,jdbcType=VARCHAR},
+      </if>
+      <if test="requestBody != null">
+        request_body = #{requestBody,jdbcType=VARCHAR},
+      </if>
+      <if test="responseBody != null">
+        response_body = #{responseBody,jdbcType=VARCHAR},
+      </if>
+      <if test="callDate != null">
+        call_date = #{callDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestUri != null">
+        request_uri = #{requestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="queryString != null">
+        query_string = #{queryString,jdbcType=VARCHAR},
+      </if>
+      <if test="callerIp != null">
+        caller_ip = #{callerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="callerHost != null">
+        caller_host = #{callerHost,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null">
+        request_method = #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceId != null">
+        interface_id = #{interfaceId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.laowengs.mocker.po.MockLog">
+    update mock_log
+    set request_url = #{requestUrl,jdbcType=VARCHAR},
+      `header` = #{header,jdbcType=VARCHAR},
+      path_param = #{pathParam,jdbcType=VARCHAR},
+      request_body = #{requestBody,jdbcType=VARCHAR},
+      response_body = #{responseBody,jdbcType=VARCHAR},
+      call_date = #{callDate,jdbcType=TIMESTAMP},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      request_uri = #{requestUri,jdbcType=VARCHAR},
+      query_string = #{queryString,jdbcType=VARCHAR},
+      caller_ip = #{callerIp,jdbcType=VARCHAR},
+      caller_host = #{callerHost,jdbcType=VARCHAR},
+      request_method = #{requestMethod,jdbcType=VARCHAR},
+      interface_id = #{interfaceId,jdbcType=BIGINT}
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+
+  <select id="listByInterfaceId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mock_log
+    where interface_id = #{interfaceId,jdbcType=BIGINT}
+  </select>
+</mapper>

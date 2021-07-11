@@ -1,6 +1,7 @@
 package com.laowengs.mocker.method;
 
 import com.laowengs.mocker.cache.IMockUrlCache;
+import com.laowengs.mocker.mapper.MockLogDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class GetRequestMethodProcessor extends AbstractRequestMethodProcessor implements IRequestMethodProcessor{
 
     @Autowired
-    public GetRequestMethodProcessor(@Qualifier("mockUrlEhCacheImpl") IMockUrlCache mockUrlCache) {
-        super(mockUrlCache);
+    public GetRequestMethodProcessor(@Qualifier("mockUrlEhCacheImpl") IMockUrlCache mockUrlCache, MockLogDao mockLogDao) {
+        super(mockUrlCache,mockLogDao);
     }
 }

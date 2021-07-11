@@ -1,5 +1,7 @@
 package com.laowengs.mocker.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,8 +24,9 @@ public class MockInterface implements Serializable {
 
     private String responseContextType;
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createDate;
-
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date updateDate;
 
     private String realUri;

@@ -23,37 +23,37 @@
     <!-- 内容-->
     <el-row :gutter="20">
 <!--        左侧时间线-->
-        <el-col :span="4">
+        <el-col :span="2">
             <br>
-            <br>
-            <el-timeline>
-                <el-timeline-item
-                        v-for="(activity, index) in activities"
-                        :key="index"
-                        :icon="activity.icon"
-                        :type="activity.type"
-                        :color="activity.color"
-                        :size="activity.size"
-                        :timestamp="activity.timestamp">
-                    {{activity.content}}
-                </el-timeline-item>
-            </el-timeline>
+<!--            <br>-->
+<!--            <el-timeline>-->
+<!--                <el-timeline-item-->
+<!--                        v-for="(activity, index) in activities"-->
+<!--                        :key="index"-->
+<!--                        :icon="activity.icon"-->
+<!--                        :type="activity.type"-->
+<!--                        :color="activity.color"-->
+<!--                        :size="activity.size"-->
+<!--                        :timestamp="activity.timestamp">-->
+<!--                    {{activity.content}}-->
+<!--                </el-timeline-item>-->
+<!--            </el-timeline>-->
         </el-col>
 <!--        中间-->
         <el-col :span="20">
             <br>
             <el-row>
-                <el-col :span="4">
+                <el-col :span="6">
                     <el-button type="text" @click="showInsertDialog()">点击创建一个mock url</el-button>
                 </el-col>
-                <el-col :span="16">
+                <el-col :span="12">
                     <el-input class="search_input"
                               placeholder="请输入内容"
                               v-model="search_input"
                               style="border-radius:16px 0px 0px 16px">
                     </el-input>
                 </el-col>
-                <el-col :span="4">
+                <el-col :span="6">
                     <el-button  @click="qryMockList()" class="search_button" type="primary" icon="el-icon-search">搜索</el-button>
                 </el-col>
 
@@ -150,63 +150,27 @@
                 </el-dialog>
             </el-row>
             <el-row>
-                <el-table
-                        :data="tableData"
-                        stripe
-                        style="width: 100%">
-                    <el-table-column
-                            prop="id"
-                            label="id"
-                            width="60">
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="接口名称"
-                            width="80">
-                    </el-table-column>
-                    <el-table-column
-                            prop="requestMethod"
-                            label="请求方式"
-                            width="100">
-                    </el-table-column>
-<!--                    <el-table-column-->
-<!--                            prop="requestType"-->
-<!--                            label="请求类型"-->
-<!--                            width="80">-->
-<!--                    </el-table-column>-->
-<!--                    <el-table-column-->
-<!--                            prop="responseType"-->
-<!--                            label="返回类型"-->
-<!--                            width="80">-->
-<!--                    </el-table-column>-->
-                    <el-table-column
-                            label="返回值"
-                            width="80">
-                        <template slot-scope="scope">
-                            <el-popover trigger="click" placement="top">
-                                <p>{{ scope.row.response }}</p>
-                                <el-button type="text" slot="reference" class="name-wrapper">
-                                    接口内容
-                                </el-button>
-                            </el-popover>
+                <el-table :data="tableData" stripe style="width: 100%">
+                    <el-table-column prop="id" label="id" width="60"></el-table-column>
+                    <el-table-column prop="name" label="接口名称" width="80"></el-table-column>
+                    <el-table-column prop="requestMethod" label="请求方式" width="100"></el-table-column>
+                    <el-table-column label="返回值" width="80">
+                        <template scope="scope">
+                            <el-tooltip class="item" effect="dark" :content="scope.row.response" placement="top">
+                                <el-button type="text" @click="copyText(scope.row.response)">返回值</el-button>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
 
-                    <el-table-column
-                            prop="address"
-                            label="mock地址"
-                            width="200"
-                    >
+                    <el-table-column prop="address" label="mock地址"></el-table-column>
+                    <el-table-column prop="realUri" label="调用地址">
+                        <template scope="scope">
+                            <el-tooltip class="item" effect="dark" :content="scope.row.realUri" placement="top">
+                                <el-button type="text" @click="copyText(scope.row.realUri)">调用地址</el-button>
+                            </el-tooltip>
+                        </template>
                     </el-table-column>
-                    <el-table-column
-                            prop="realUri"
-                            label="调用地址"
-                    ></el-table-column>
-                    <el-table-column
-                            prop="createDate"
-                            label="创建时间"
-                            width="200">
-                    </el-table-column>
+                    <el-table-column prop="createDate" label="创建时间" width="200"></el-table-column>
                     <el-table-column label="操作" width="140">
                         <template slot-scope="scope">
                             <el-button @click="showInfoDialog(scope.row.id)" type="text" size="small">查看</el-button>
@@ -229,25 +193,13 @@
                     </div>
                 </el-card>
 
-                <el-table
-                        :data="callLogData"
-                        stripe
-                        style="width: 100%">
-                    <el-table-column
-                            prop="id"
-                            label="id"
-                            width="60">
-                    </el-table-column>
-                    <el-table-column
-                            prop="callDate"
-                            label="调用时间"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            prop="callerIp"
-                            label="mock地址"
-                    >
-                    </el-table-column>
+                <el-table :data="callLogData" stripe style="width: 100%">
+                    <el-table-column prop="id" label="id" width="60"></el-table-column>
+                    <el-table-column prop="callerIp" label="callerIp"></el-table-column>
+                    <el-table-column prop="queryString" label="queryString"></el-table-column>
+                    <el-table-column prop="requestBody" label="requestBody"></el-table-column>
+                    <el-table-column prop="requestMethod" label="requestMethod"></el-table-column>
+                    <el-table-column prop="callDate" label="callDate"></el-table-column>
                 </el-table>
             </el-dialog>
         </el-col>
@@ -312,22 +264,6 @@
                     content: '后台服务支持',
                     timestamp: '2021-05-08 23:25',
                     color: '#0bbd87'
-                }, {
-                    content: 'API管理',
-                    timestamp: '2099-04-03 20:46',
-                    size: 'large'
-                }, {
-                    content: '请求参数校验',
-                    timestamp: '2099-04-03 20:46'
-                },{
-                    content: '动态返回参数',
-                    timestamp: '2099-04-03 20:46'
-                },{
-                    content: '租户管理',
-                    timestamp: '2099-04-03 20:46'
-                },{
-                    content: '谢绝白嫖',
-                    timestamp: '2099-04-03 20:46'
                 }],
                 search_input: "",
                 rules: {
@@ -434,7 +370,8 @@
                         method: response.data.requestMethod.split(','),
                         requestType: response.data.requestContextType.split(','),
                         responseType: response.data.responseContextType,
-                        response: response.data.responseBody
+                        response: response.data.responseBody,
+                        createDate: response.data.createDate
                     }
                 })
                 axios.request({
@@ -448,7 +385,10 @@
                         logList.push({
                             "id": info.logId,
                             "callDate": info.callDate,
-                            "callerIp": info.callerIp
+                            "callerIp": info.callerIp,
+                            "requestBody": info.requestBody,
+                            "header": info.header,
+                            "requestMethod": info.requestMethod
                         })
                     })
                     this.callLogData = logList
@@ -502,8 +442,21 @@
                 }).then(response => {
                     this.qryMockList()
                 })
+            },
+            copyText(data) {
+                const oInput = document.createElement('input');     //创建一个隐藏input（重要！）
+                oInput.value = data;    //赋值
+                document.body.appendChild(oInput);
+                oInput.select(); // 选择对象
+                document.execCommand("Copy"); // 执行浏览器复制命令
+                oInput.className = 'oInput';
+                oInput.style.display='none';
+                this.$message({
+                    message: '复制成功',
+                    type: 'success',
+                    duration: 1000
+                });
             }
-
         }
 
     })

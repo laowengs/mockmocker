@@ -1,4 +1,4 @@
-package com.laowengs.mocker;
+package com.laowengs.mocker.controller;
 
 import com.laowengs.mocker.cache.IMockUrlCache;
 import com.laowengs.mocker.dto.MockInterfaceDTO;
@@ -6,6 +6,7 @@ import com.laowengs.mocker.mapper.MockInterfaceDao;
 import com.laowengs.mocker.mapper.MockLogDao;
 import com.laowengs.mocker.po.MockInterface;
 import com.laowengs.mocker.po.MockLog;
+import com.laowengs.mocker.server.ServerInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,19 +29,25 @@ public class MockerController {
     private final MockInterfaceDao mockInterfaceDao;
     private final IMockUrlCache mockUrlCache;
     private final MockLogDao mockLogDao;
+    private final ServerInfo serverInfo;
 
     @Autowired
     public MockerController(MockInterfaceDao mockInterfaceDao,
                             @Qualifier("mockUrlEhCacheImpl") IMockUrlCache mockUrlCache,
-                            MockLogDao mockLogDao) {
+                            MockLogDao mockLogDao,
+                            ServerInfo serverInfo) {
         this.mockInterfaceDao = mockInterfaceDao;
         this.mockUrlCache = mockUrlCache;
         this.mockLogDao = mockLogDao;
+        this.serverInfo = serverInfo;
     }
 
     @GetMapping
     public List<MockInterface> list(String urlPath) {
         List<MockInterface> mockInterfaces = mockInterfaceDao.selectByPath(urlPath);
+        for (MockInterface mockInterface : mockInterfaces) {
+            mockInterface.setRealUri(serverInfo.getUrl()+mockInterface.getRealUri());
+        }
         return mockInterfaces;
     }
 

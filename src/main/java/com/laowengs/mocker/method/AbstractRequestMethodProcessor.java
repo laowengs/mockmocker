@@ -24,8 +24,8 @@ import java.util.Map;
 public abstract class AbstractRequestMethodProcessor implements IRequestMethodProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(AbstractRequestMethodProcessor.class);
-    protected IMockUrlCache mockUrlCache;
-    private MockLogDao mockLogDao;
+    protected final IMockUrlCache mockUrlCache;
+    private final MockLogDao mockLogDao;
 
     public AbstractRequestMethodProcessor(IMockUrlCache mockUrlCache, MockLogDao mockLogDao) {
         this.mockUrlCache = mockUrlCache;
@@ -44,6 +44,7 @@ public abstract class AbstractRequestMethodProcessor implements IRequestMethodPr
             requestBody = bodyBuilder.toString();
             logger.info(requestBody);
         } catch (IOException e) {
+            logger.error("获取请求body异常",e);
         }
         MockLog mockLog = new MockLog();
         mockLog.setRequestUrl(req.getRequestURL().toString());
@@ -91,7 +92,7 @@ public abstract class AbstractRequestMethodProcessor implements IRequestMethodPr
                 mockLog.setResponseBody(mockInterface.getResponseBody());
                 resp.getWriter().append(mockInterface.getResponseBody());
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("返回数据异常",e);
             }
         } catch (Exception e) {
             logger.error("服务调用异常",e);

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -43,10 +44,12 @@ public class MockerController {
     }
 
     @GetMapping
-    public List<MockInterface> list(String urlPath) {
+    public List<MockInterface> list(String urlPath, HttpServletRequest request) {
+        String requestURL = request.getRequestURL().toString();
+        String baseUrl = requestURL.split("/interface")[0];
         List<MockInterface> mockInterfaces = mockInterfaceDao.selectByPath(urlPath);
         for (MockInterface mockInterface : mockInterfaces) {
-            mockInterface.setRealUri(serverInfo.getUrl()+mockInterface.getRealUri());
+            mockInterface.setRealUri(baseUrl+"/mock"+mockInterface.getRealUri());
         }
         return mockInterfaces;
     }

@@ -196,11 +196,37 @@
                 </el-card>
 
                 <el-table :data="callLogData" stripe style="width: 100%">
-                    <el-table-column prop="id" label="id" width="60"></el-table-column>
+                    <el-table-column prop="id" label="id" width="50"></el-table-column>
                     <el-table-column prop="callerIp" label="callerIp"></el-table-column>
-                    <el-table-column prop="queryString" label="queryString"></el-table-column>
-                    <el-table-column prop="requestBody" label="requestBody"></el-table-column>
-                    <el-table-column prop="requestMethod" label="requestMethod"></el-table-column>
+                    <el-table-column prop="method" label="method"></el-table-column>
+                    <el-table-column prop="header" label="header">
+                        <template scope="scope">
+                            <el-tooltip class="item" effect="dark" :content="scope.row.header" placement="top">
+                                <el-button type="text" @click="copyText(scope.row.header)">header</el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="queryString" label="query">
+                        <template scope="scope">
+                            <el-tooltip class="item" effect="dark" :content="scope.row.queryString" placement="top">
+                                <el-button type="text" @click="copyText(scope.row.queryString)">query</el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="requestBody" label="request">
+                        <template scope="scope">
+                            <el-tooltip class="item" effect="dark" :content="scope.row.requestBody" placement="top">
+                                <el-button type="text" @click="copyText(scope.row.requestBody)">request</el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="responseBody" label="response">
+                        <template scope="scope">
+                            <el-tooltip class="item" effect="dark" :content="scope.row.responseBody" placement="top">
+                                <el-button type="text" @click="copyText(scope.row.responseBody)">response</el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="callDate" label="callDate"></el-table-column>
                 </el-table>
             </el-dialog>
@@ -390,6 +416,7 @@
                             "callerIp": info.callerIp,
                             "requestBody": info.requestBody,
                             "header": info.header,
+                            "responseBody": info.responseBody,
                             "requestMethod": info.requestMethod
                         })
                     })
@@ -437,13 +464,22 @@
                 })
             },
             deleteMockerInfo(interfaceId){
-                axios.request({
-                    url: '/interface/'+interfaceId,
-                    method: 'DELETE',
-                    params: {}
-                }).then(response => {
-                    this.qryMockList()
-                })
+                // axios.request({
+                //     url: '/interface/'+interfaceId,
+                //     method: 'DELETE',
+                //     params: {}
+                // }).then(response => {
+                //     this.qryMockList()
+                // })
+                for (let i = 0; i < 10; i++) {
+                    this.$message({
+                        message: '为了防止世界被破坏，为了守护世界的和平~~ 禁止！删除！就是这样~',
+                        type: 'success',
+                        duration: 4000,
+                        offset: i*50
+                    });
+
+                }
             },
             copyText(data) {
                 const oInput = document.createElement('input');     //创建一个隐藏input（重要！）

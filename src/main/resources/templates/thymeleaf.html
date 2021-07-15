@@ -60,10 +60,10 @@
                 <el-dialog title="MOCK URL" :visible.sync="dialogInsertMockFormVisible">
                     <el-form ref="addForm" :rules="rules" :model="addForm" label-width="80px">
                         <el-form-item label="接口名称" prop="interfaceName">
-                            <el-input v-model="addForm.interfaceName"></el-input>
+                            <el-input v-model="addForm.interfaceName" placeholder="请输入接口的名称2-10个字符为佳"></el-input>
                         </el-form-item>
                         <el-form-item label="接口地址" prop="address">
-                            <el-input v-model="addForm.address"></el-input>
+                            <el-input v-model="addForm.address" placeholder="请输入接口的地址"></el-input>
                         </el-form-item>
                         <el-form-item label="请求方式" prop="method">
                             <el-checkbox-group v-model="addForm.method">
@@ -77,69 +77,71 @@
                                 <el-checkbox label="TRACE" name="method"></el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
-                        <el-form-item label="参数类型" prop="requestType">
-                            <el-checkbox-group v-model="addForm.requestType">
-                                <el-checkbox label="application/x-www-form-urlencoded" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/json" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/atom+xml" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/cbor" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/json;charset=UTF-8" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/octet-stream" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/pdf" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/problem+json" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/problem+json;charset=UTF-8" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/problem+xml" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/rss+xml" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/x-ndjson" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/stream+json" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/xhtml+xml" name="requestType"></el-checkbox>
-                                <el-checkbox label="application/xml" name="requestType"></el-checkbox>
-                                <el-checkbox label="image/gif" name="requestType"></el-checkbox>
-                                <el-checkbox label="image/jpeg" name="requestType"></el-checkbox>
-                                <el-checkbox label="image/png" name="requestType"></el-checkbox>
-                                <el-checkbox label="multipart/form-data" name="requestType"></el-checkbox>
-                                <el-checkbox label="multipart/mixed" name="requestType"></el-checkbox>
-                                <el-checkbox label="multipart/related" name="requestType"></el-checkbox>
-                                <el-checkbox label="text/event-stream" name="requestType"></el-checkbox>
-                                <el-checkbox label="text/html" name="requestType"></el-checkbox>
-                                <el-checkbox label="text/markdown" name="requestType"></el-checkbox>
-                                <el-checkbox label="text/plain" name="requestType"></el-checkbox>
-                                <el-checkbox label="text/xml" name="requestType"></el-checkbox>
 
-                            </el-checkbox-group>
+                        <el-form-item label="参数类型" prop="requestType">
+                            <el-select v-model="addForm.requestType" multiple placeholder="请选择请求的参数类型,可以多选" style="width: 320px">
+                                <el-option key="application/x-www-form-urlencoded" label="application/x-www-form-urlencoded" value="application/x-www-form-urlencoded"></el-option>
+                                <el-option key="application/json" label="application/json" value="application/json"></el-option>
+                                <el-option key="application/atom+xml" label="application/atom+xml" value="application/atom+xml"></el-option>
+                                <el-option key="application/cbor" label="application/cbor" value="application/cbor"></el-option>
+                                <el-option key="application/json;charset=UTF-8" label="application/json;charset=UTF-8" value="application/json;charset=UTF-8"></el-option>
+                                <el-option key="application/octet-stream" label="application/octet-stream" value="application/octet-stream"></el-option>
+                                <el-option key="application/pdf" label="application/pdf" value="application/pdf"></el-option>
+                                <el-option key="application/problem+json" label="application/problem+json" value="application/problem+json"></el-option>
+                                <el-option key="application/problem+json;charset=UTF-8" label="application/problem+json;charset=UTF-8" value="application/problem+json;charset=UTF-8"></el-option>
+                                <el-option key="application/problem+xml" label="application/problem+xml" value="application/problem+xml"></el-option>
+                                <el-option key="application/rss+xml" label="application/rss+xml" value="application/rss+xml"></el-option>
+                                <el-option key="application/x-ndjson" label="application/x-ndjson" value="application/x-ndjson"></el-option>
+                                <el-option key="application/stream+json" label="application/stream+json" value="application/stream+json"></el-option>
+                                <el-option key="application/xhtml+xml" label="application/xhtml+xml" value="application/xhtml+xml"></el-option>
+                                <el-option key="application/xml" label="application/xml" value="application/xml"></el-option>
+                                <el-option key="image/gif" label="image/gif" value="image/gif"></el-option>
+                                <el-option key="image/jpeg" label="image/jpeg" value="image/jpeg"></el-option>
+                                <el-option key="image/png" label="image/png" value="image/png"></el-option>
+                                <el-option key="multipart/form-data" label="multipart/form-data" value="multipart/form-data"></el-option>
+                                <el-option key="multipart/mixed" label="multipart/mixed" value="multipart/mixed"></el-option>
+                                <el-option key="multipart/related" label="multipart/related" value="multipart/related"></el-option>
+                                <el-option key="text/event-stream" label="text/event-stream" value="text/event-stream"></el-option>
+                                <el-option key="text/html" label="text/html" value="text/html"></el-option>
+                                <el-option key="text/markdown" label="text/markdown" value="text/markdown"></el-option>
+                                <el-option key="text/plain" label="text/plain" value="text/plain"></el-option>
+                                <el-option key="text/xml" label="text/xml" value="text/xml"></el-option>
+                            </el-select>
                         </el-form-item>
+
                         <el-form-item label="返回类型" prop="responseType">
-                            <el-radio-group v-model="addForm.responseType">
-                                <el-radio label="application/x-www-form-urlencoded" ></el-radio>
-                                <el-radio label="application/json" ></el-radio>
-                                <el-radio label="application/atom+xml" ></el-radio>
-                                <el-radio label="application/cbor" ></el-radio>
-                                <el-radio label="application/json;charset=UTF-8" ></el-radio>
-                                <el-radio label="application/octet-stream" ></el-radio>
-                                <el-radio label="application/pdf" ></el-radio>
-                                <el-radio label="application/problem+json" ></el-radio>
-                                <el-radio label="application/problem+json;charset=UTF-8" ></el-radio>
-                                <el-radio label="application/problem+xml" ></el-radio>
-                                <el-radio label="application/rss+xml" ></el-radio>
-                                <el-radio label="application/x-ndjson" ></el-radio>
-                                <el-radio label="application/stream+json" ></el-radio>
-                                <el-radio label="application/xhtml+xml" ></el-radio>
-                                <el-radio label="application/xml" ></el-radio>
-                                <el-radio label="image/gif" ></el-radio>
-                                <el-radio label="image/jpeg" ></el-radio>
-                                <el-radio label="image/png" ></el-radio>
-                                <el-radio label="multipart/form-data" ></el-radio>
-                                <el-radio label="multipart/mixed" ></el-radio>
-                                <el-radio label="multipart/related" ></el-radio>
-                                <el-radio label="text/event-stream" ></el-radio>
-                                <el-radio label="text/html" ></el-radio>
-                                <el-radio label="text/markdown" ></el-radio>
-                                <el-radio label="text/plain" ></el-radio>
-                                <el-radio label="text/xml" ></el-radio>
-                            </el-radio-group>
+                            <el-select v-model="addForm.responseType" filterable placeholder="请选择请求返回类型"  style="width: 320px">
+                                <el-option key="application/x-www-form-urlencoded" label="application/x-www-form-urlencoded" value="application/x-www-form-urlencoded"></el-option>
+                                <el-option key="application/json" label="application/json" value="application/json"></el-option>
+                                <el-option key="application/atom+xml" label="application/atom+xml" value="application/atom+xml"></el-option>
+                                <el-option key="application/cbor" label="application/cbor" value="application/cbor"></el-option>
+                                <el-option key="application/json;charset=UTF-8" label="application/json;charset=UTF-8" value="application/json;charset=UTF-8"></el-option>
+                                <el-option key="application/octet-stream" label="application/octet-stream" value="application/octet-stream"></el-option>
+                                <el-option key="application/pdf" label="application/pdf" value="application/pdf"></el-option>
+                                <el-option key="application/problem+json" label="application/problem+json" value="application/problem+json"></el-option>
+                                <el-option key="application/problem+json;charset=UTF-8" label="application/problem+json;charset=UTF-8" value="application/problem+json;charset=UTF-8"></el-option>
+                                <el-option key="application/problem+xml" label="application/problem+xml" value="application/problem+xml"></el-option>
+                                <el-option key="application/rss+xml" label="application/rss+xml" value="application/rss+xml"></el-option>
+                                <el-option key="application/x-ndjson" label="application/x-ndjson" value="application/x-ndjson"></el-option>
+                                <el-option key="application/stream+json" label="application/stream+json" value="application/stream+json"></el-option>
+                                <el-option key="application/xhtml+xml" label="application/xhtml+xml" value="application/xhtml+xml"></el-option>
+                                <el-option key="application/xml" label="application/xml" value="application/xml"></el-option>
+                                <el-option key="image/gif" label="image/gif" value="image/gif"></el-option>
+                                <el-option key="image/jpeg" label="image/jpeg" value="image/jpeg"></el-option>
+                                <el-option key="image/png" label="image/png" value="image/png"></el-option>
+                                <el-option key="multipart/form-data" label="multipart/form-data" value="multipart/form-data"></el-option>
+                                <el-option key="multipart/mixed" label="multipart/mixed" value="multipart/mixed"></el-option>
+                                <el-option key="multipart/related" label="multipart/related" value="multipart/related"></el-option>
+                                <el-option key="text/event-stream" label="text/event-stream" value="text/event-stream"></el-option>
+                                <el-option key="text/html" label="text/html" value="text/html"></el-option>
+                                <el-option key="text/markdown" label="text/markdown" value="text/markdown"></el-option>
+                                <el-option key="text/plain" label="text/plain" value="text/plain"></el-option>
+                                <el-option key="text/xml" label="text/xml" value="text/xml"></el-option>
+                            </el-select>
                         </el-form-item>
+
                         <el-form-item label="返回内容" prop="response">
-                            <el-input type="textarea" v-model="addForm.response"></el-input>
+                            <el-input type="textarea" v-model="addForm.response" placeholder="服务需要返回的内容信息,可填可不填"></el-input>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">

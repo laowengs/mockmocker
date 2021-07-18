@@ -103,7 +103,7 @@ public class MockerController {
             if(mockInterfaceOri.getUrlPath().equals(mockInterface.getUrlPath())){
                 mockInterface.setRealUri(mockInterfaceOri.getRealUri());
             }
-            int number = mockInterfaceDao.updateByPrimaryKey(mockInterface);
+            int number = mockInterfaceDao.updateByPrimaryKeySelective(mockInterface);
 
             if(number == 1){
                 mockUrlCache.remove(mockInterfaceOri.getUrlPath());

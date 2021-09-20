@@ -108,7 +108,7 @@ public abstract class AbstractRequestMethodProcessor implements IRequestMethodPr
         contentType = contentType.toUpperCase();
         for (String ableContentType : ableContentTypes) {
             ableContentType = ableContentType.toUpperCase();
-            if (ableContentType.equals(contentType) || ableContentType.contains(contentType)) {
+            if (ableContentType.equals(contentType) || ableContentType.contains(contentType) || contentType.contains(ableContentType)) {
                 return true;
             }
         }

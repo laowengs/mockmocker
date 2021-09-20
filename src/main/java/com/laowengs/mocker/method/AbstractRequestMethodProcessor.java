@@ -1,10 +1,7 @@
 package com.laowengs.mocker.method;
 
-import java.util.Date;
-
 import com.alibaba.fastjson.JSONObject;
 import com.laowengs.mocker.cache.IMockUrlCache;
-import com.laowengs.mocker.cache.ehcache.MockUrlEhCacheImpl;
 import com.laowengs.mocker.mapper.MockLogDao;
 import com.laowengs.mocker.po.MockInterface;
 import com.laowengs.mocker.po.MockLog;
@@ -17,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,15 +73,15 @@ public abstract class AbstractRequestMethodProcessor implements IRequestMethodPr
                 return;
             }
             mockLog.setInterfaceId(mockInterface.getInterfaceId());
-            boolean isAbleMethod = isAbleMethod(req, mockInterface);
-            if (!isAbleMethod) {
+            if (!isAbleMethod(req, mockInterface)) {
+                logger.debug("uri {} request method {} only able {}", req.getRequestURI(), req.getMethod(), mockInterface.getRequestMethod());
                 doNotFound(req, resp);
                 return;
             }
 
-            boolean isAbelRequestContextType = isAbelRequestContextType(req, mockInterface);
-            if (!isAbelRequestContextType) {
+            if (!isAbelRequestContextType(req, mockInterface)) {
                 doNotFound(req, resp);
+                logger.debug("uri {} request contextType {} only able {}", req.getRequestURI(), req.getContentType(), mockInterface.getRequestContextType());
                 return;
             }
 
@@ -102,15 +100,15 @@ public abstract class AbstractRequestMethodProcessor implements IRequestMethodPr
     }
 
     private boolean isAbelRequestContextType(HttpServletRequest req, MockInterface mockInterface) {
-        String[] methods = mockInterface.getRequestContextType().split(",");
-        for (String method : methods) {
-            method = method.toUpperCase();
-            String contentType = req.getContentType();
-            if (contentType == null) {
-                return true;
-            }
-            contentType = contentType.toUpperCase();
-            if (method.equals(contentType) || method.contains(contentType)) {
+        String[] ableContentTypes = mockInterface.getRequestContextType().split(",");
+        String contentType = req.getContentType();
+        if (contentType == null) {
+            return true;
+        }
+        contentType = contentType.toUpperCase();
+        for (String ableContentType : ableContentTypes) {
+            ableContentType = ableContentType.toUpperCase();
+            if (ableContentType.equals(contentType) || ableContentType.contains(contentType)) {
                 return true;
             }
         }

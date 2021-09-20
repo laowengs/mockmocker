@@ -31,9 +31,10 @@ public class MockServlet extends HttpServlet implements ApplicationContextAware 
         String method = req.getMethod().toLowerCase();
         IRequestMethodProcessor requestMethodProcessor = null;
         try {
-            requestMethodProcessor = (IRequestMethodProcessor) applicationContext.getBean(method + "RequestMethodProcessor");
+            requestMethodProcessor = (IRequestMethodProcessor) applicationContext.getBean("commonRequestMethodProcessor");
         }catch (BeansException e){
-            requestMethodProcessor = (IRequestMethodProcessor)applicationContext.getBean("getRequestMethodProcessor");
+            logger.error("not found commonRequestMethodProcessor bean ",e);
+            return;
         }
         requestMethodProcessor.processor(req,resp);
     }

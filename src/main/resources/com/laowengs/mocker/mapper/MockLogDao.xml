@@ -195,6 +195,6 @@
     select
     <include refid="Base_Column_List" />
     from mock_log
-    where interface_id = #{interfaceId,jdbcType=BIGINT}
+    where interface_id = #{interfaceId,jdbcType=BIGINT} order by interface_id desc
   </select>
 </mapper>

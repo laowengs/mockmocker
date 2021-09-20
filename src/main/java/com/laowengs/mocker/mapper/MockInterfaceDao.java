@@ -20,4 +20,6 @@ public interface MockInterfaceDao {
     List<MockInterface> selectByMockInterface(MockInterface mockInterface);
 
     List<MockInterface> selectByPath(String urlPath);
+
+    List<MockInterface> selectAll();
 }

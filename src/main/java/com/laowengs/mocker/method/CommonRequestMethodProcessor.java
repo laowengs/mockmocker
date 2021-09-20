@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GetRequestMethodProcessor extends AbstractRequestMethodProcessor implements IRequestMethodProcessor{
+public class CommonRequestMethodProcessor extends AbstractRequestMethodProcessor implements IRequestMethodProcessor{
 
     @Autowired
-    public GetRequestMethodProcessor(@Qualifier("mockUrlEhCacheImpl") IMockUrlCache mockUrlCache, MockLogDao mockLogDao) {
+    public CommonRequestMethodProcessor(@Qualifier("mockUrlEhCacheImpl") IMockUrlCache mockUrlCache, MockLogDao mockLogDao) {
         super(mockUrlCache,mockLogDao);
     }
 }

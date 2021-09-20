@@ -2,6 +2,7 @@ package com.laowengs.mocker.controller;
 
 import com.laowengs.mocker.cache.IMockUrlCache;
 import com.laowengs.mocker.dto.MockInterfaceDTO;
+import com.laowengs.mocker.flow.RequestFlowRule;
 import com.laowengs.mocker.mapper.MockInterfaceDao;
 import com.laowengs.mocker.mapper.MockLogDao;
 import com.laowengs.mocker.po.MockInterface;
@@ -31,16 +32,19 @@ public class MockerController {
     private final IMockUrlCache mockUrlCache;
     private final MockLogDao mockLogDao;
     private final ServerInfo serverInfo;
+    private final RequestFlowRule requestFlowRule;
 
     @Autowired
     public MockerController(MockInterfaceDao mockInterfaceDao,
                             @Qualifier("mockUrlEhCacheImpl") IMockUrlCache mockUrlCache,
                             MockLogDao mockLogDao,
-                            ServerInfo serverInfo) {
+                            ServerInfo serverInfo,
+                            RequestFlowRule requestFlowRule) {
         this.mockInterfaceDao = mockInterfaceDao;
         this.mockUrlCache = mockUrlCache;
         this.mockLogDao = mockLogDao;
         this.serverInfo = serverInfo;
+        this.requestFlowRule = requestFlowRule;
     }
 
     @GetMapping
@@ -78,6 +82,7 @@ public class MockerController {
         if(interfaceId == 1){
             mockUrlCache.putCache("/mock"+mockInterface.getRealUri(),mockInterface);
         }
+        requestFlowRule.addFlowRule(mockInterface);
         return mockInterface;
     }
 

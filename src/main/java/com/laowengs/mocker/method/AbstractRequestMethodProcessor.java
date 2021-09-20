@@ -1,5 +1,8 @@
 package com.laowengs.mocker.method;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSONObject;
 import com.laowengs.mocker.cache.IMockUrlCache;
 import com.laowengs.mocker.mapper.MockLogDao;
@@ -66,31 +69,44 @@ public abstract class AbstractRequestMethodProcessor implements IRequestMethodPr
         mockLog.setRequestMethod(req.getMethod());
 
         try {
-
             MockInterface mockInterface = mockUrlCache.getCache(req.getRequestURI());
             if (mockInterface == null) {
+                logger.debug("uri {} not fount interface ", req.getRequestURI());
                 doNotFound(req, resp);
                 return;
             }
-            mockLog.setInterfaceId(mockInterface.getInterfaceId());
-            if (!isAbleMethod(req, mockInterface)) {
-                logger.debug("uri {} request method {} only able {}", req.getRequestURI(), req.getMethod(), mockInterface.getRequestMethod());
-                doNotFound(req, resp);
-                return;
-            }
-
-            if (!isAbelRequestContextType(req, mockInterface)) {
-                doNotFound(req, resp);
-                logger.debug("uri {} request contextType {} only able {}", req.getRequestURI(), req.getContentType(), mockInterface.getRequestContextType());
-                return;
-            }
-
-            resp.setContentType(mockInterface.getResponseContextType());
+            Entry entry = null;
             try {
-                mockLog.setResponseBody(mockInterface.getResponseBody());
-                resp.getWriter().append(mockInterface.getResponseBody());
-            } catch (IOException e) {
-                logger.error("返回数据异常",e);
+                entry = SphU.entry(mockInterface.getRealUri());
+                // 被保护的逻辑
+                mockLog.setInterfaceId(mockInterface.getInterfaceId());
+                if (!isAbleMethod(req, mockInterface)) {
+                    logger.debug("uri {} request method {} only able {}", req.getRequestURI(), req.getMethod(), mockInterface.getRequestMethod());
+                    doNotFound(req, resp);
+                    return;
+                }
+
+                if (!isAbelRequestContextType(req, mockInterface)) {
+                    doNotFound(req, resp);
+                    logger.debug("uri {} request contextType {} only able {}", req.getRequestURI(), req.getContentType(), mockInterface.getRequestContextType());
+                    return;
+                }
+
+                resp.setContentType(mockInterface.getResponseContextType());
+                try {
+                    mockLog.setResponseBody(mockInterface.getResponseBody());
+                    resp.getWriter().append(mockInterface.getResponseBody());
+                } catch (IOException e) {
+                    logger.error("返回数据异常",e);
+                }
+            } catch (BlockException ex) {
+                // 处理被流控的逻辑
+                logger.debug("uri {} request too many, flow control...", req.getRequestURI());
+                resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            }finally {
+                if(entry != null){
+                    entry.exit();
+                }
             }
         } catch (Exception e) {
             logger.error("服务调用异常",e);

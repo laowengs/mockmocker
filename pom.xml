@@ -200,25 +200,33 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>laowengs</id>
+            <name>laowengs</name>
+            <url>http://192.168.0.100:8081/repository/maven-snapshots/</url>
+        </repository>
+        <snapshotRepository>
+            <id>laowengs</id>
+            <name>laowengs</name>
+            <url>http://192.168.0.100:8081/repository/maven-releases/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <repositories>
         <repository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>https://repo.spring.io/release</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>laowengs</id>
+            <name>laowengs</name>
+            <url>http://192.168.0.100:8081/repository/maven-public/</url>
         </repository>
     </repositories>
+
     <pluginRepositories>
         <pluginRepository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>https://repo.spring.io/release</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>laowengs</id>
+            <name>laowengs</name>
+            <url>http://192.168.0.100:8081/repository/maven-public/</url>
         </pluginRepository>
     </pluginRepositories>
-
 </project>

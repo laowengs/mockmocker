@@ -205,12 +205,12 @@
         <repository>
             <id>laowengs</id>
             <name>laowengs</name>
-            <url>http://192.168.0.100:8081/repository/maven-snapshots/</url>
+            <url>http://develop.com:8081/repository/maven-snapshots/</url>
         </repository>
         <snapshotRepository>
             <id>laowengs</id>
             <name>laowengs</name>
-            <url>http://192.168.0.100:8081/repository/maven-releases/</url>
+            <url>http://develop.com:8081/repository/maven-releases/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -218,7 +218,7 @@
         <repository>
             <id>laowengs</id>
             <name>laowengs</name>
-            <url>http://192.168.0.100:8081/repository/maven-public/</url>
+            <url>http://develop.com:8081/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -226,7 +226,7 @@
         <pluginRepository>
             <id>laowengs</id>
             <name>laowengs</name>
-            <url>http://192.168.0.100:8081/repository/maven-public/</url>
+            <url>http://develop.com:8081/repository/maven-public/</url>
         </pluginRepository>
     </pluginRepositories>
 </project>

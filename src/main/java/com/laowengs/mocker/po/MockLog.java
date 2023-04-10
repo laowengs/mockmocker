@@ -1,6 +1,7 @@
 package com.laowengs.mocker.po;
 
-import com.alibaba.fastjson.annotation.JSONField;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,9 +22,9 @@ public class MockLog implements Serializable {
     private String requestBody;
 
     private String responseBody;
-    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date callDate;
-    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createDate;
 
     private String requestUri;

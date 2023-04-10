@@ -1,6 +1,5 @@
 package com.laowengs.mocker.po;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.io.Serializable;

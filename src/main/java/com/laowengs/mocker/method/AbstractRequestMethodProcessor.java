@@ -3,6 +3,8 @@ package com.laowengs.mocker.method;
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laowengs.mocker.cache.IMockUrlCache;
 import com.laowengs.mocker.mapper.MockLogDao;
 import com.laowengs.mocker.po.MockInterface;
@@ -56,7 +58,12 @@ public abstract class AbstractRequestMethodProcessor implements IRequestMethodPr
             headerMap.put(key,value);
         }
         //TODO TOJSON
-        mockLog.setHeader(headerMap.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mockLog.setHeader(mapper.writeValueAsString(headerMap));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         mockLog.setPathParam("");
         mockLog.setRequestBody(requestBody);
 

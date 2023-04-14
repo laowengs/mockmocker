@@ -109,8 +109,7 @@ public class TestEnvironmentPostProcessor implements EnvironmentPostProcessor {
 			}
 		}
  
-		System.out.println("*********** end ************");
- 
+
 		System.out.println(filteredProperties);
  
 		PropertiesPropertySource propertySources = new PropertiesPropertySource(

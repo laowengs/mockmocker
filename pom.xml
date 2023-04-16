@@ -155,32 +155,32 @@
         </plugins>
     </build>
 
-<!--    <distributionManagement>-->
-<!--        <repository>-->
-<!--            <id>laowengs</id>-->
-<!--            <name>laowengs</name>-->
-<!--            <url>http://develop.com:8081/repository/maven-snapshots/</url>-->
-<!--        </repository>-->
-<!--        <snapshotRepository>-->
-<!--            <id>laowengs</id>-->
-<!--            <name>laowengs</name>-->
-<!--            <url>http://develop.com:8081/repository/maven-releases/</url>-->
-<!--        </snapshotRepository>-->
-<!--    </distributionManagement>-->
+    <distributionManagement>
+        <repository>
+            <id>laowengs</id>
+            <name>laowengs</name>
+            <url>http://data.vm:8081/repository/maven-snapshots/</url>
+        </repository>
+        <snapshotRepository>
+            <id>laowengs</id>
+            <name>laowengs</name>
+            <url>http://data.vm:8081/repository/maven-releases/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>laowengs</id>-->
-<!--            <name>laowengs</name>-->
-<!--            <url>http://develop.com:8081/repository/maven-public/</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <repositories>
+        <repository>
+            <id>laowengs</id>
+            <name>laowengs</name>
+            <url>http://data.vm:8081/repository/maven-public/</url>
+        </repository>
+    </repositories>
 
-<!--    <pluginRepositories>-->
-<!--        <pluginRepository>-->
-<!--            <id>laowengs</id>-->
-<!--            <name>laowengs</name>-->
-<!--            <url>http://develop.com:8081/repository/maven-public/</url>-->
-<!--        </pluginRepository>-->
-<!--    </pluginRepositories>-->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>laowengs</id>
+            <name>laowengs</name>
+            <url>http://data.vm:8081/repository/maven-public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

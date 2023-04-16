@@ -82,8 +82,7 @@ public class TestEnvironmentPostProcessor implements EnvironmentPostProcessor {
 			if (resource == null || !resource.exists()) {
 				return;
 			}
-			System.out.println("################33");
- 
+
 			Properties p = new Properties();
 			try {
 				InputStream inputStream = resource.getInputStream();

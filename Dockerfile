@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/laoweng/openjdk:8-jre-alpine
+FROM data.vm:8082/jdk/openjdk:17.0.1
 WORKDIR /root
 COPY target/mockmocker-*.jar /app/mockmocker.jar
 

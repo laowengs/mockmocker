@@ -1,4 +1,4 @@
-FROM data.vm:8082/jdk/openjdk:17.0.1
+FROM nexus.laowengs.com:8082/jdk/openjdk:17.0.1
 WORKDIR /root
 COPY target/mockmocker-*.jar /app/mockmocker.jar
 

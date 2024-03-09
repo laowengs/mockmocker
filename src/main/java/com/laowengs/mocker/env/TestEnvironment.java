@@ -5,7 +5,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class TestEnvironment implements EnvironmentAware{
 
     private TestConfig testConfig;

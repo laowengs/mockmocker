@@ -1,6 +1,7 @@
 package com.laowengs.mocker.po;
 
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
@@ -11,6 +12,8 @@ import java.util.Date;
  * @author 
  */
 public class MockLog implements Serializable {
+
+    @TableId
     private Long logId;
 
     private String requestUrl;

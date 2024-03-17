@@ -1,10 +1,10 @@
 package com.laowengs.mocker.po;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * mock_log
@@ -13,6 +13,7 @@ import java.util.Date;
  */
 @Data
 public class MockLogHis implements Serializable {
+    @TableId
     private Long logId;
 
     private String requestUrl;

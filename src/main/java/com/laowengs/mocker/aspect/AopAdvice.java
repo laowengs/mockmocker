@@ -28,14 +28,15 @@ public class AopAdvice {
     }
 
     @Around("test()")
-    public void aroundAdvice(ProceedingJoinPoint proceedingJoinPoint) {
+    public Object aroundAdvice(ProceedingJoinPoint proceedingJoinPoint) {
         System.out.println("before");
         try {
-            proceedingJoinPoint.proceed();
+           return proceedingJoinPoint.proceed();
         } catch (Throwable t) {
             t.printStackTrace();
         }
         System.out.println("after");
+        return null;
     }
 
 }
